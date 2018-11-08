@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">BeaconTest</string>
+    <string name="app_name">Beacon Guide</string>
     <string name="title_activity_place_information">PlaceInformation</string>
 </resources>
