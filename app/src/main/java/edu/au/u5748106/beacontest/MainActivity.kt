@@ -34,9 +34,20 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         map = hashMapOf(
-            4341 to Place(4341, R.drawable.l1, "Entrance", "Welcome to the Assumption University Library. We hope your visit, whether personal or virtual, will be successful and productive. Our resources, services and facilities exist to support learning, teaching,research and other activities of the University. \n" +
-                    "We are striving to make the Library a comfortable and welcoming place to study and to launch your life-long learning work habits and it is a place to learn on your own and in collaboration with your colleagues. We are also continually working to improve users' information literacy skills."),
-            4332 to Place(4332, R.drawable.l2, "Newspapers Collection", "Gain insight into Chinese political and social life during the turbulent 120 year period from 1832 to 1953 with 12 English-language Chinese historical newspapers. Included are critical perspectives on the ending of more than 2,000 years of imperial rule in China, the Taiping Rebellion, the Opium Wars with Great Britain, the Boxer Rebellion and the events leading up to the1911 Xinhai Revolution, and the subsequent founding of the Republic of China. In addition to the article content, the full-image newspapers offer searchable access to advertisements, editorials, cartoons, and classified ads that illuminate history.")
+            /*4332 to Place(4332, R.drawable.l1, "Entrance", "Welcome to the Assumption University Library. We hope your visit, whether personal or virtual, will be successful and productive. Our resources, services and facilities exist to support learning, teaching,research and other activities of the University. \n" +
+                    "We are striving to make the Library a comfortable and welcoming place to study and to launch your life-long learning work habits and it is a place to learn on your own and in collaboration with your colleagues. We are also continually working to improve users' information literacy skills."),*/
+            4341 to Place(4341, R.drawable.asean, "ASEAN Corner", "Establishment\n" +
+                    "The Association of Southeast Asian Nations, or ASEAN, was established on 8 August 1967 in Bangkok, Thailand, with the signing of the ASEAN Declaration (Bangkok Declaration) by the Founding Fathers of ASEAN, namely Indonesia, Malaysia, Philippines, Singapore and Thailand.\n" +
+                    "Brunei Darussalam then joined on 7 January 1984, Viet Nam on 28 July 1995, Lao PDR and Myanmar on 23 July 1997, and Cambodia on 30 April 1999, making up what is today the ten Member States of ASEAN.\n" +
+                    " \n" +
+                    "Fundamental Principles\n" +
+                    "In their relations with one another, the ASEAN Member States have adopted the following fundamental principles, as contained in the Treaty of Amity and Cooperation in Southeast Asia (TAC) of 1976:\n" +
+                    "Mutual respect for the independence, sovereignty, equality, territorial integrity, and national identity of all nations;\n" +
+                    "The right of every State to lead its national existence free from external interference, subversion or coercion;\n" +
+                    "Non-interference in the internal affairs of one another;\n" +
+                    "Settlement of differences or disputes by peaceful manner;\n" +
+                    "Renunciation of the threat or use of force; and\n" +
+                    "Effective cooperation among themselves.")
         )
 
         mBeaconManager = BeaconManager.getInstanceForApplication(this)
@@ -64,7 +75,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             val notificationBuilder = NotificationCompat.Builder(this)
                 .setContentTitle("You are near the " + lastPlace!!.placeTitle)
                 .setContentText("Tap here to learn more about this place.")
-                //.setAutoCancel(true)
+                .setAutoCancel(true)
                 .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.ic_launcher_background))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setSound(defaultSoundUri)
@@ -114,6 +125,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             override fun didExitRegion(region: Region) {
                 mBeaconManager.stopRangingBeaconsInRegion(mRegion);
                 Log.d("BEACON", "I no longer see an beacon")
+                imageView.setImageResource(R.drawable.library)
+                lastPlace = null
+                textBeaconId.text = "Looking for the beacons..."
+                textBeaconDistance.text = ""
+                button2.visibility = View.INVISIBLE
             }
 
             override fun didDetermineStateForRegion(i: Int, region: Region) {
@@ -129,14 +145,17 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                     if (lastPlace == null || lastPlace!!.placeID != b[0].toInt()) {
                         showNotification = true
                     }
+                    if (map.containsKey(b[0].toInt())) {
+                        lastPlace = map[b[0].toInt()]!!
 
-                    lastPlace = map[b[0].toInt()]!!
+                        textBeaconId.text = lastPlace!!.placeTitle
+                        textBeaconDistance.text = "~" + b[1] + "m"
+                        button2.visibility = View.VISIBLE
 
-                    textBeaconId.text = lastPlace!!.placeTitle
-                    textBeaconDistance.text = "~" + b[1] + "m"
-
-                    if (showNotification) {
-                        sendNotification()
+                        if (showNotification) {
+                            sendNotification()
+                            imageView.setImageResource(R.drawable.library_asean)
+                        }
                     }
 
                     Log.d("BEACON", it)
