@@ -1,4 +1,4 @@
-# Captcha Recognition
+# Beacons in Android Application
 This is an example for basic usage [Beacons](https://kontakt.io/beacon-basics/what-is-a-beacon/) in Android Application using Kotlin. [Project for Social Interests, Government Policies And Technology]
 
 The idea is to create an interactive guide for library to practically demonstrate beacon technology.
